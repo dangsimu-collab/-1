@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>크리에이터 설문 — CreatorPay</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
+:root{--bg:#0A0A0F;--surface:#13131A;--surface2:#1C1C26;--border:rgba(255,255,255,0.08);--border-h:rgba(255,255,255,0.18);--accent:#7B6EF6;--accent-l:#A99FF8;--accent-g:rgba(123,110,246,0.15);--text:#F0EFF8;--t2:#9997B0;--t3:#5A5870;--green:#2DD4BF;--r:16px;--rs:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0 0 80px}
+.hero{padding:60px 24px 40px;max-width:640px;margin:0 auto}
+.hero-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-l);background:var(--accent-g);border:1px solid rgba(123,110,246,0.2);padding:5px 14px;border-radius:99px;margin-bottom:20px}
+.dot-live{width:6px;height:6px;border-radius:50%;background:#2DD4BF;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(22px,5vw,32px);font-weight:700;line-height:1.25;margin-bottom:12px;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--accent-l)}
+.hero p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:24px}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:5px 13px;font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px}
+.chip b{color:var(--accent-l);font-weight:600}
+.prog-wrap{max-width:640px;margin:0 auto;padding:0 24px 28px}
+.prog-head{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:7px}
+.prog-bg{height:3px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-l));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);width:0%}
+.form{max-width:640px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;transition:border-color .2s;animation:up .4s ease both}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card:focus-within{border-color:rgba(123,110,246,0.28)}
+.qnum{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.qtxt{font-size:15px;font-weight:600;line-height:1.5;letter-spacing:-.01em;margin-bottom:5px}
+.qsub{font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:16px}
+.req{display:inline-block;font-size:10px;color:var(--accent-l);background:var(--accent-g);padding:2px 7px;border-radius:99px;margin-left:5px;vertical-align:middle}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;align-items:center;gap:11px;padding:11px 14px;border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s;user-select:none}
+.opt:hover{border-color:var(--border-h);background:rgba(255,255,255,0.025)}
+.opt.sel{border-color:var(--accent);background:var(--accent-g)}
+.circ{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--border-h);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.opt.sel .circ{border-color:var(--accent);background:var(--accent)}
+.cdot{width:7px;height:7px;border-radius:50%;background:white;opacity:0;transition:opacity .15s}
+.opt.sel .cdot{opacity:1}
+.olbl{font-size:13px;color:var(--t2);transition:color .15s;flex:1}
+.opt.sel .olbl{color:var(--text)}
+.oemo{font-size:15px;flex-shrink:0}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mopt{display:flex;align-items:center;gap:9px;padding:10px 13px;border:1px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s;user-select:none}
+.mopt:hover{border-color:var(--border-h);background:rgba(255,255,255,0.025)}
+.mopt.sel{border-color:var(--accent);background:var(--accent-g)}
+.chk{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--border-h);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s}
+.mopt.sel .chk{border-color:var(--accent);background:var(--accent);color:white}
+.mopt .olbl{font-size:13px}
+.scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:7px}
+.sbtn{aspect-ratio:1;border:1px solid var(--border);border-radius:var(--rs);background:none;color:var(--t2);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.sbtn:hover{border-color:var(--border-h);background:rgba(255,255,255,0.03)}
+.sbtn.sel{border-color:var(--accent);background:var(--accent-g);color:var(--accent-l)}
+.slbls{display:flex;justify-content:space-between;font-size:11px;color:var(--t3)}
+textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:inherit;font-size:13px;line-height:1.6;padding:13px 15px;resize:vertical;min-height:90px;transition:border-color .15s;outline:none}
+textarea::placeholder{color:var(--t3)}
+textarea:focus{border-color:rgba(123,110,246,0.35)}
+.divider{display:flex;align-items:center;gap:10px;padding:4px 0}
+.divline{flex:1;height:1px;background:var(--border)}
+.divtxt{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.sub-wrap{max-width:640px;margin:10px auto 0;padding:0 24px}
+.sub-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--rs);color:white;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:-.01em}
+.sub-btn:hover{background:var(--accent-l);transform:translateY(-1px)}
+.sub-btn:active{transform:translateY(0)}
+.sub-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.thank{display:none;max-width:640px;margin:60px auto;padding:0 24px;text-align:center}
+.thank-ic{width:60px;height:60px;background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:26px}
+.thank h2{font-size:22px;font-weight:700;margin-bottom:9px;letter-spacing:-.02em}
+.thank p{font-size:14px;color:var(--t2);line-height:1.7}
+.email-input{width:100%;margin-top:14px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-family:inherit;font-size:13px;padding:12px 15px;outline:none;transition:border-color .15s}
+.email-input:focus{border-color:rgba(123,110,246,0.35)}
+.email-input::placeholder{color:var(--t3)}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label"><span class="dot-live"></span> 크리에이터 전용 설문</div>
+  <h1>콘텐츠 만드는 분들께<br><em>솔직하게 여쭤볼게요</em></h1>
+  <p>수수료 1%, 익명 후원, 국내 간편결제 지원.<br>아직 없는 서비스입니다. 만들어야 할지 말지를<br>여러분이 결정해주세요.</p>
+  <div class="chips">
+    <div class="chip"><b>3분</b> 소요</div>
+    <div class="chip"><b>12개</b> 질문</div>
+    <div class="chip">익명 응답</div>
+    <div class="chip">크리에이터 전용</div>
+  </div>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-head"><span id="pt">0 / 12 답변</span><span id="pp">0%</span></div>
+  <div class="prog-bg"><div class="prog-fill" id="pf"></div></div>
+</div>
+
+<div class="form" id="form">
+
+<div class="card" style="animation-delay:.04s">
+  <div class="qnum">Q1</div>
+  <div class="qtxt">주로 활동하는 플랫폼은? <span class="req">필수</span></div>
+  <div class="qsub">해당하는 것을 모두 선택해주세요.</div>
+  <div class="ogrid" id="q1">
+    <div class="mopt" onclick="tm('q1',this,'유튜브')"><div class="chk"></div><span class="olbl">유튜브</span></div>
+    <div class="mopt" onclick="tm('q1',this,'아프리카TV')"><div class="chk"></div><span class="olbl">아프리카TV</span></div>
+    <div class="mopt" onclick="tm('q1',this,'치지직')"><div class="chk"></div><span class="olbl">치지직</span></div>
+    <div class="mopt" onclick="tm('q1',this,'인스타그램')"><div class="chk"></div><span class="olbl">인스타그램</span></div>
+    <div class="mopt" onclick="tm('q1',this,'X(트위터)')"><div class="chk"></div><span class="olbl">X (트위터)</span></div>
+    <div class="mopt" onclick="tm('q1',this,'틱톡')"><div class="chk"></div><span class="olbl">틱톡</span></div>
+    <div class="mopt" onclick="tm('q1',this,'기타')"><div class="chk"></div><span class="olbl">기타 / 블로그</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.08s">
+  <div class="qnum">Q2</div>
+  <div class="qtxt">구독자·팔로워 규모는? <span class="req">필수</span></div>
+  <div class="opts" id="q2">
+    <div class="opt" onclick="so('q2',this,'1천 미만')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🌱</span><span class="olbl">1천 미만 (시작 단계)</span></div>
+    <div class="opt" onclick="so('q2',this,'1천~1만')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🌿</span><span class="olbl">1천 ~ 1만</span></div>
+    <div class="opt" onclick="so('q2',this,'1만~10만')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🌳</span><span class="olbl">1만 ~ 10만</span></div>
+    <div class="opt" onclick="so('q2',this,'10만 이상')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🚀</span><span class="olbl">10만 이상</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.12s">
+  <div class="qnum">Q3</div>
+  <div class="qtxt">현재 후원을 받고 있나요? <span class="req">필수</span></div>
+  <div class="opts" id="q3">
+    <div class="opt" onclick="so('q3',this,'네, 받고 있어요')"><div class="circ"><div class="cdot"></div></div><span class="oemo">✅</span><span class="olbl">네, 받고 있어요</span></div>
+    <div class="opt" onclick="so('q3',this,'받고 싶지만 방법을 모르겠어요')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🤔</span><span class="olbl">받고 싶지만 방법을 모르겠어요</span></div>
+    <div class="opt" onclick="so('q3',this,'아직 생각 없어요')"><div class="circ"><div class="cdot"></div></div><span class="oemo">💭</span><span class="olbl">아직 생각 없어요</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.16s">
+  <div class="qnum">Q4</div>
+  <div class="qtxt">후원을 받아봤다면, 어떤 수단을 사용했나요?</div>
+  <div class="qsub">해당 없으면 건너뛰어도 됩니다.</div>
+  <div class="ogrid" id="q4">
+    <div class="mopt" onclick="tm('q4',this,'유튜브 슈퍼챗')"><div class="chk"></div><span class="olbl">유튜브 슈퍼챗</span></div>
+    <div class="mopt" onclick="tm('q4',this,'유튜브 멤버십')"><div class="chk"></div><span class="olbl">유튜브 멤버십</span></div>
+    <div class="mopt" onclick="tm('q4',this,'투네이션')"><div class="chk"></div><span class="olbl">투네이션</span></div>
+    <div class="mopt" onclick="tm('q4',this,'트윕')"><div class="chk"></div><span class="olbl">트윕</span></div>
+    <div class="mopt" onclick="tm('q4',this,'치지직 치즈')"><div class="chk"></div><span class="olbl">치지직 치즈</span></div>
+    <div class="mopt" onclick="tm('q4',this,'아프리카TV 별풍선')"><div class="chk"></div><span class="olbl">아프리카TV 별풍선</span></div>
+    <div class="mopt" onclick="tm('q4',this,'팬박스')"><div class="chk"></div><span class="olbl">팬박스 (Fanbox)</span></div>
+    <div class="mopt" onclick="tm('q4',this,'Patreon')"><div class="chk"></div><span class="olbl">Patreon</span></div>
+    <div class="mopt" onclick="tm('q4',this,'Ko-fi')"><div class="chk"></div><span class="olbl">Ko-fi</span></div>
+    <div class="mopt" onclick="tm('q4',this,'직접 계좌이체')"><div class="chk"></div><span class="olbl">직접 계좌이체</span></div>
+    <div class="mopt" onclick="tm('q4',this,'사용 안 함')"><div class="chk"></div><span class="olbl">사용 안 함</span></div>
+    <div class="mopt" onclick="tm('q4',this,'기타')"><div class="chk"></div><span class="olbl">기타</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.2s">
+  <div class="qnum">Q5</div>
+  <div class="qtxt">기존 후원 수단에서 가장 불편한 점은? <span class="req">필수</span></div>
+  <div class="opts" id="q5">
+    <div class="opt" onclick="so('q5',this,'수수료가 너무 높다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">💸</span><span class="olbl">플랫폼 수수료가 너무 높다 (10~30%)</span></div>
+    <div class="opt" onclick="so('q5',this,'결제 수수료까지 내가 부담해야 한다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😤</span><span class="olbl">카드 결제 수수료까지 내가 부담해야 한다</span></div>
+    <div class="opt" onclick="so('q5',this,'후원금이 바로바로 정산되지 않는다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">⏳</span><span class="olbl">후원금이 바로바로 정산되지 않고 오래 걸린다</span></div>
+    <div class="opt" onclick="so('q5',this,'설정이 복잡하고 어렵다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😵</span><span class="olbl">설정이 복잡하고 어렵다</span></div>
+    <div class="opt" onclick="so('q5',this,'한국어 지원 부족·원화 정산 불편')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🇰🇷</span><span class="olbl">한국어 지원 부족·원화 정산 불편</span></div>
+    <div class="opt" onclick="so('q5',this,'딱히 불만 없다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😐</span><span class="olbl">딱히 불만 없다</span></div>
+  </div>
+</div>
+
+<div class="divider"><div class="divline"></div><div class="divtxt">새 서비스 평가</div><div class="divline"></div></div>
+
+<div class="card" style="animation-delay:.24s">
+  <div class="qnum">Q6</div>
+  <div class="qtxt">이런 서비스, 쓸 것 같나요? <span class="req">필수</span></div>
+  <div class="qsub">플랫폼 수수료 1% · 카드·카카오페이·토스·계좌이체 각각 ON/OFF 설정 가능 (계좌이체만 켜면 결제 수수료 0%) · 내 실명 없이 닉네임만으로 후원받기 가능 · 링크 하나 공유로 바로 후원 시작</div>
+  <div class="opts" id="q6">
+    <div class="opt" onclick="so('q6',this,'당장 쓰겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🚀</span><span class="olbl">당장 쓰겠다</span></div>
+    <div class="opt" onclick="so('q6',this,'나오면 써볼 것 같다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">👀</span><span class="olbl">나오면 써볼 것 같다</span></div>
+    <div class="opt" onclick="so('q6',this,'기존 서비스와 병행할 것 같다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">⚖️</span><span class="olbl">기존 서비스와 병행할 것 같다</span></div>
+    <div class="opt" onclick="so('q6',this,'잘 모르겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🤷</span><span class="olbl">잘 모르겠다</span></div>
+    <div class="opt" onclick="so('q6',this,'필요 없을 것 같다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🙅</span><span class="olbl">필요 없을 것 같다</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.28s">
+  <div class="qnum">Q7</div>
+  <div class="qtxt">결제 수단을 직접 켜고 끌 수 있다면, 어떻게 설정하시겠어요? <span class="req">필수</span></div>
+  <div class="qsub">카드·카카오페이·토스·계좌이체를 각각 ON/OFF 가능. 계좌이체만 켜두면 결제 수수료 0% · 간편결제나 카드를 켜면 해당 수수료 발생 (후원자 또는 크리에이터 부담 선택 가능)</div>
+  <div class="opts" id="q7">
+    <div class="opt" onclick="so('q7',this,'계좌이체만 ON — 수수료 0%로 운영하겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🏦</span><span class="olbl">계좌이체만 ON — 수수료 0%로 운영하겠다</span></div>
+    <div class="opt" onclick="so('q7',this,'간편결제(카카오·토스)도 켜겠다 — 팬 편의가 더 중요하다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">📱</span><span class="olbl">간편결제도 켜겠다 — 팬 편의가 더 중요하다</span></div>
+    <div class="opt" onclick="so('q7',this,'전부 다 켜겠다 — 결제 수단이 많을수록 좋다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">✅</span><span class="olbl">카드 포함 전부 켜겠다 — 결제 수단이 많을수록 좋다</span></div>
+    <div class="opt" onclick="so('q7',this,'방송·이벤트 상황에 따라 그때그때 바꾸겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🔀</span><span class="olbl">상황에 따라 그때그때 바꿔가며 쓰겠다</span></div>
+    <div class="opt" onclick="so('q7',this,'잘 모르겠다, 기본값 그대로 쓸 것 같다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🤷</span><span class="olbl">잘 모르겠다, 기본값 그대로 쓸 것 같다</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.32s">
+  <div class="qnum">Q8</div>
+  <div class="qtxt">간편결제·카드를 켰을 때 발생하는 결제 수수료, 누가 부담하는 게 맞다고 생각하세요? <span class="req">필수</span></div>
+  <div class="qsub">예: 후원자가 카카오페이로 1,000원 보낼 때 수수료 약 1.5~2.5% 발생. 이걸 크리에이터가 낼지, 후원자에게 얹어서 받을지 크리에이터가 직접 선택 가능.</div>
+  <div class="opts" id="q8">
+    <div class="opt" onclick="so('q8',this,'후원자 부담 — 편한 결제 수단 쓰는 사람이 수수료도 내야 한다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">👤</span><span class="olbl">후원자 부담 — 편한 결제 수단 쓰는 사람이 내야 한다</span></div>
+    <div class="opt" onclick="so('q8',this,'크리에이터 부담 — 후원자에게 부담 주는 게 심리적으로 걸린다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😬</span><span class="olbl">크리에이터 부담 — 후원자에게 부담 주는 게 걸린다</span></div>
+    <div class="opt" onclick="so('q8',this,'그냥 계좌이체만 켜서 수수료 자체를 없애겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🏦</span><span class="olbl">차라리 계좌이체만 켜서 수수료 자체를 없애겠다</span></div>
+    <div class="opt" onclick="so('q8',this,'크리에이터가 직접 선택할 수 있다는 것 자체가 중요하다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">✨</span><span class="olbl">누가 내든 내가 선택할 수 있다는 게 가장 중요하다</span></div>
+    <div class="opt" onclick="so('q8',this,'잘 모르겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😶</span><span class="olbl">잘 모르겠다</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.36s">
+  <div class="qnum">Q9</div>
+  <div class="qtxt">기존 서비스에서 이 서비스로 바꿀 의향이 있나요? <span class="req">필수</span></div>
+  <div class="opts" id="q9">
+    <div class="opt" onclick="so('q9',this,'조건 좋으면 바로 바꾼다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🔄</span><span class="olbl">조건 좋으면 바로 바꾼다</span></div>
+    <div class="opt" onclick="so('q9',this,'병행해서 먼저 써볼 것 같다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">⚖️</span><span class="olbl">병행해서 먼저 써볼 것 같다</span></div>
+    <div class="opt" onclick="so('q9',this,'팬들이 기존 플랫폼에 익숙해서 바꾸기 어렵다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">😅</span><span class="olbl">팬들이 기존 플랫폼에 익숙해서 어렵다</span></div>
+    <div class="opt" onclick="so('q9',this,'현재 후원 수단이 없어 새로 시작하겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🆕</span><span class="olbl">현재 수단 없어서 새로 시작하겠다</span></div>
+  </div>
+</div>
+
+<div class="divider"><div class="divline"></div><div class="divtxt">기능 우선순위</div><div class="divline"></div></div>
+
+<div class="card" style="animation-delay:.4s">
+  <div class="qnum">Q10</div>
+  <div class="qtxt">후원 서비스에서 가장 중요한 것 하나만 고른다면? <span class="req">필수</span></div>
+  <div class="opts" id="q10">
+    <div class="opt" onclick="so('q10',this,'낮은 수수료')"><div class="circ"><div class="cdot"></div></div><span class="oemo">💰</span><span class="olbl">낮은 수수료</span></div>
+    <div class="opt" onclick="so('q10',this,'빠르고 간단한 설정')"><div class="circ"><div class="cdot"></div></div><span class="oemo">⚡</span><span class="olbl">빠르고 간단한 설정</span></div>
+    <div class="opt" onclick="so('q10',this,'익명성 보장')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🔒</span><span class="olbl">익명성 보장</span></div>
+    <div class="opt" onclick="so('q10',this,'국내 간편결제 지원')"><div class="circ"><div class="cdot"></div></div><span class="oemo">📲</span><span class="olbl">국내 간편결제 지원</span></div>
+    <div class="opt" onclick="so('q10',this,'플랫폼 안전성·신뢰도')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🛡️</span><span class="olbl">플랫폼 안전성·신뢰도</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.44s">
+  <div class="qnum">Q11</div>
+  <div class="qtxt">베타 테스터로 참여할 의향이 있나요? <span class="req">필수</span></div>
+  <div class="qsub">출시 전 무료로 먼저 써보고 피드백을 주는 역할입니다.</div>
+  <div class="opts" id="q11">
+    <div class="opt" onclick="so('q11',this,'네, 꼭 참여하고 싶다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🙋</span><span class="olbl">네, 꼭 참여하고 싶다</span></div>
+    <div class="opt" onclick="so('q11',this,'관심 있다, 더 알고 싶다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">👀</span><span class="olbl">관심 있다, 더 알고 싶다</span></div>
+    <div class="opt" onclick="so('q11',this,'아직 모르겠다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🤷</span><span class="olbl">아직 모르겠다</span></div>
+    <div class="opt" onclick="so('q11',this,'참여 의향 없다')"><div class="circ"><div class="cdot"></div></div><span class="oemo">🙅</span><span class="olbl">참여 의향 없다</span></div>
+  </div>
+</div>
+
+<div class="card" style="animation-delay:.48s">
+  <div class="qnum">Q12</div>
+  <div class="qtxt">솔직한 한 마디</div>
+  <div class="qsub">기대되는 점, 걱정되는 점, 추가됐으면 하는 기능 무엇이든 환영합니다.</div>
+  <textarea placeholder="자유롭게 작성해주세요 (선택 사항)" oninput="up()"></textarea>
+</div>
+
+</div>
+
+<div class="sub-wrap">
+  <button class="sub-btn" id="sb" onclick="submit()" disabled>설문 제출하기</button>
+</div>
+
+<div class="thank" id="thank">
+  <div class="thank-ic">✓</div>
+  <h2>감사합니다!</h2>
+  <p>크리에이터 여러분의 의견이<br>서비스를 만드는 데 직접 반영됩니다.</p>
+  <p style="margin-top:20px;font-size:13px;color:var(--t3)">베타 출시 소식을 먼저 받고 싶으시다면<br>이메일을 남겨주세요.</p>
+  <input class="email-input" type="email" placeholder="이메일 주소 (선택 사항)">
+</div>
+
+<script>
+const ans={};
+const REQ=['q1','q2','q3','q5','q6','q7','q8','q9','q10','q11'];
+function so(q,el,v){document.querySelectorAll('#'+q+' .opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');ans[q]=v;up()}
+function tm(q,el,v){el.classList.toggle('sel');if(!ans[q])ans[q]=[];if(el.classList.contains('sel')){if(!ans[q].includes(v))ans[q].push(v);el.querySelector('.chk').textContent='✓'}else{ans[q]=ans[q].filter(x=>x!==v);el.querySelector('.chk').textContent=''}up()}
+function ss(q,el,v){document.querySelectorAll('#'+q+' .sbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');ans[q]=v;up()}
+function up(){
+  let d=0;
+  REQ.forEach(q=>{const a=ans[q];if(Array.isArray(a)?a.length>0:a)d++});
+  const t=12,f=d+(ans['q4']&&ans['q4'].length?1:0);
+  const p=Math.round(Math.min(f,t)/t*100);
+  document.getElementById('pf').style.width=p+'%';
+  document.getElementById('pt').textContent=Math.min(f,t)+' / '+t+' 답변';
+  document.getElementById('pp').textContent=p+'%';
+  document.getElementById('sb').disabled=!REQ.every(q=>{const a=ans[q];return Array.isArray(a)?a.length>0:!!a});
+}
+function submit(){
+  document.getElementById('form').style.display='none';
+  document.querySelector('.prog-wrap').style.display='none';
+  document.querySelector('.sub-wrap').style.display='none';
+  const t=document.getElementById('thank');
+  t.style.display='block';
+  t.style.animation='up .5s ease both';
+}
+</script>
+</body>
+</html>
